@@ -102,7 +102,7 @@ void forward_yolo_layer(const layer l, network net)// forward_yolo_layer() funct
             }
         }
 ````
->  ###### 해당 부분까지가 각 grid cell에 접근하여 Anchor Box를 통하여 iou값을 얻어서 해당 iou값에 따라서 delta ( loss값 계산할 때 사용되는 변수 )에 feature map을 통하여 추출한 output값을 저장한다. 여기서 iou값이 0.7보다 작으면 0 - output  (objectness값은 작아야 되기 때문에) 0.7보다 크면 1 - output (objectness값이 1에 가까워야 하기 때문)을 통하여 delta 값을 결정한다.
+> ###### 해당 부분까지가 각 grid cell에 접근하여 Anchor Box를 통하여 iou값을 얻어서 해당 iou값에 따라서 delta ( loss값 계산할 때 사용되는 변수 )에 feature map을 통하여 추출한 output값을 저장한다. 여기서 iou값이 0.7보다 작으면 0 - output  (objectness값은 작아야 되기 때문에) 0.7보다 크면 1 - output (objectness값이 1에 가까워야 하기 때문)을 통하여 delta 값을 결정한다.
 
 ````
 for(t = 0; t < l.max_boxes; ++t)
