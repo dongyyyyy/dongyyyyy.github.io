@@ -13,4 +13,5 @@ categories: jekyll pixyll
   * 만약 coco데이터와 동일하게 학습할 경우 (80개의 객체에 대해서 학습)  
       *   ``./darknet detector train cfg/coco.data cfg/yolov3.cfg darknet53.conv.74``
   * 기존 weights(YOLO에서 주어준 학습 데이터)를 사용하여 transfer learning을 하기 위해선
-  본인이 학습시킬 cfg파일의 max_batch값을 변경해주어야 한다. ( 해당 학습 데이터는 총 500200의 학습을 이미 했기 때문에 수정 안하고 학습을 진행하면 바로 학습이 종료된다. )    ![_config.yml](https://dongyyyyy.github.io/images/cfg.JPG)
+  본인이 학습시킬 cfg파일의 max_batches값을 변경해주어야 한다. ( 해당 학습 데이터는 총 500200의 학습을 이미 했기 때문에 수정 안하고 학습을 진행하면 바로 학습이 종료된다. )  
+  - ![_config.yml](https://dongyyyyy.github.io/images/cfg.JPG) - 기존 max_batches값을 600200으로 수정하여 학습하기 위한 방법    
