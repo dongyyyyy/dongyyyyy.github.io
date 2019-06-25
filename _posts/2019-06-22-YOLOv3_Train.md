@@ -102,7 +102,7 @@ void forward_yolo_layer(const layer l, network net)// forward_yolo_layer() funct
             }
         }
 ````
->  해당 부분까지가 각 grid cell에 접근하여 Anchor Box를 통하여 iou값을 얻어서 해당 iou값에 따라서 delta ( loss값 계산할 때 사용되는 변수 )에 feature map을 통하여 추출한 output값을 저장한다. 여기서 iou값이 0.7보다 작으면 0 - output  (objectness값은 작아야 되기 때문에) 0.7보다 크면 1 - output (objectness값이 1에 가까워야 하기 때문)을 통하여 delta 값을 결정한다.
+>  ###### 해당 부분까지가 각 grid cell에 접근하여 Anchor Box를 통하여 iou값을 얻어서 해당 iou값에 따라서 delta ( loss값 계산할 때 사용되는 변수 )에 feature map을 통하여 추출한 output값을 저장한다. 여기서 iou값이 0.7보다 작으면 0 - output  (objectness값은 작아야 되기 때문에) 0.7보다 크면 1 - output (objectness값이 1에 가까워야 하기 때문)을 통하여 delta 값을 결정한다.
 
 ````
 for(t = 0; t < l.max_boxes; ++t)
@@ -181,7 +181,7 @@ for(t = 0; t < l.max_boxes; ++t)
 }//end forward_yolo_layer() function
 ````
 
-> 하나의 이미지에 대해서 모든  pixel접근이 완료된 후 실제 라벨링된 위치 (ground truth)정보를 사용하여  학습 모델을 통해서 추출한 output과 실측값을 비교하여 loss를 검출하는 부분이다. 이를 통해서 MSE ( Mean Square Error)을 사용하여 0에 가깝도록 학습시키는 것을 반복한다.
+> ###### 하나의 이미지에 대해서 모든  pixel접근이 완료된 후 실제 라벨링된 위치 (ground truth)정보를 사용하여  학습 모델을 통해서 추출한 output과 실측값을 비교하여 loss를 검출하는 부분이다. 이를 통해서 MSE ( Mean Square Error)을 사용하여 0에 가깝도록 학습시키는 것을 반복한다.
 
 * 위의 부분은 yolo layer에서 loss값을 얻기 위해 forward를 하는 작업이다. 학습 부분에 있어서 보다 다양한 함수들을 접근하여 처리합니다
 * 모든 내용을 한번에 다루기에는 너무 양이 많기 때문에 추가적으로 보고 싶은 부분이 있다면
