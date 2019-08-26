@@ -69,8 +69,23 @@ categories: jekyll pixyll
 * Fast R-CNN은 SPP layer의 single level pyramid만 사용하여 이를 ROI pooling layer이라함.
 
 * R-CNN에서는 softmax classifier 와 linear bounding box regressor을 따로 학습.
+
+
 * Fast R-CNN은 두 함수의 loss를 더한 multi-task loss기반으로 두가지를 동시에 학습.
 
 ---
 
 ### Faster R-CNN
+* Feature Extract Network의 마지막에 Region을 잡아주는 network ( Region Proposal Network)를 추가하여 Bounding Box를 추출
+
+* Anchor Box개념 도입 ( But K-means 알고리즘을 사용하지는 않았음. (2:1 , 1:1 , 1:2 비율 총 9개의 Anchor Box사용 ) )
+
+* RPN에서는 Non-object / Object & Bounding Box proposal 두가지 작업을 진행
+
+* RPN을 통해서 추출된 BB는 object score에 영향을 받아서 추출됨. Non-object일 경우에는 Bounding box = X
+
+* RPN을 통해 추출된 ROI를 가지고 최종적으로 ROI pooling을 통해서 정보 추출
+
+* 최종적으로 추출된 BB의 정보를 통해 Classification과 BB를 도출해냄
+
+* 다음과 같이 모델이 진행되므로 모든 부분이 back propagation이 가능하며 하나의 모델로 통일되었기에 속도 또한 매우 높아짐
