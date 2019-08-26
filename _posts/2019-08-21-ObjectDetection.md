@@ -64,7 +64,7 @@ categories: jekyll pixyll
 
 * 기존에는 Region Proposal이 CNN 이전에 시행되어 총 2000번의 Image를 CNN 작업을 따로 했지만, Fast R-CNN은 Region Proposal 작업을 CNN에서 처리함으로써 연산량을 급격히 줄임.
 
-* Region을 생성한 후 모든 다른 크기의 Region을 Classfication을 하기 위해서는 각 Region의 이미지크기를 통일시켜야함. 이 부분을 R-CNN의 경우에는 wrap을 활용하여 해결했지만 Fast R-CNN은 Spatial Pyramid Pooling을 사용함.
+* Region을 생성한 후 모든 다른 크기의 Region을 Classfication을 하기 위해서는 각 Region의 이미지크기를 통일시켜야함. 이 부분을 R-CNN의 경우에는 warp을 활용하여 해결했지만 Fast R-CNN은 Spatial Pyramid Pooling을 사용함.
 
 * Fast R-CNN은 SPP layer의 single level pyramid만 사용하여 이를 ROI pooling layer이라함.
 
