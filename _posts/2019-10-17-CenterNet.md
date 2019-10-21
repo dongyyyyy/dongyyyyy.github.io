@@ -174,3 +174,38 @@ categories: jekyll pixyll
 ---
 
 ### Enriching Center and Corner Information
+
+- **Center pooling**
+  - The geometric centers of objects do not necessarily convey very recognizable visual patters (e.g., the human head contains strong visual patterns, but the center keypoint is often in the middle of the human body.)
+
+  - To address this issue, we propose center pooling to capture richer and more recognizable visual patters.
+
+  - Figure 4(a) shows the principle of center pooling.
+  ---
+  ![_config.yml](https://dongyyyyy.github.io/images/centerNet_Figure4.JPG)
+  ---
+
+  - The backbone outputs a feature map, and to determine if a pixel in the feature map is a center keypoint, we need to find the maximum value in its both horizontal and vertical directions and add them together. By doing this, center pooling helps the better detection of center keypoints.
+
+- **Cascade corner pooling**
+ - Corners are often outside the objects, which lacks local appearance features. CornerNet uses corner pooling to address this issue. The principle of corner pooling is shown in Figure 4(b).
+
+ - Corner pooling aims to find the maximum values on the boundary directions so as to determine corners. However, it makes corners sensitive to the edges.
+
+ - To adress this problem, we need to let corners "see" the visual patterns of objects. The priciple of cascade corner pooling is presented in Figure 4(c).
+
+   - It first looks along a boundary to find a boundary maximum value, then looks inside along the location of the boundary mzximum value to find an internal maximum value, and finally, add the two maximum values together.
+
+   - By doing this, the corners obtain both the boundary information and the visual patterns of objects.
+
+- Both the center pooling and the cascade corner pooling can be easily achieved by combining the corner pooling at different directions.
+
+---
+  ![_config.yml](https://dongyyyyy.github.io/images/centerNet_Figure5.JPG)
+---
+
+- Figure 5(a) shows the structure of the center pooling module. To take a maximum value in a direction, e.g., the horizontal direction, we only need to connect the left pooling and the right pooling in series.
+
+- Figure 5(b) shows the structure of a cascade top corner pooling moudle.
+
+- Compare with the top corner pooling in CornerNet, we add a left corner pooling before the top corner pooling.
