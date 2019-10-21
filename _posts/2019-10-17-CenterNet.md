@@ -304,9 +304,49 @@ categories: jekyll pixyll
 
     - This is becaues our approach removes lots of incorrect bounding boxes, which is equivalent to improving the confidence of those bounding boxes with accurate locations but lower scores.
 
-  ---
+---
   ![_config.yml](https://dongyyyyy.github.io/images/centerNet_Figure7.JPG)
 
-  ---
+---
 
 ### Incorrect Bounding Box Reduction
+---
+![_config.yml](https://dongyyyyy.github.io/images/centerNet_Table3.JPG)
+
+---
+
+- Table 3 shows the FD rates for CornerNet and CenterNet. CornerNet generates many incorrect bounding boxes even at IoU = 0.05 threshold.
+
+- On the other hand, CornerNet generates more small incorrect bounding boxes than medium and large incorrect bounding boxes.
+
+- Our CenterNet decreases the FD rates at all criteria via exploring central regions.
+
+### Inference Speed
+
+- 생략
+
+### Ablation Study
+
+- Our work has contributed three components, including central region exploration, center pooling and cascade corner pooling.
+
+- To analyze the contribution of each individual component, an ablation study is given here.
+
+- **Central region exploration** To understand the importance of the central region exploration, we add a center heatmap branch to the baseline and use a triplet of keypoints to detect bounding boxes.
+
+- For the center keypoint detection, we only use conventional convolutions.
+---
+![_config.yml](https://dongyyyyy.github.io/images/centerNet_Table4.JPG)
+
+---
+
+- We find that the improvement for the small objects (that is 4.6%) is more significant than that for other object scales.
+
+- The improvement for large objects is almost negligible (from 52.2% to 52.3%).
+
+- This is not surprising because, from a probabilistic point of view, the center keypoint for a small object is easier to be located than that of  a large object.
+
+- **Center pooling** To demonstrate the effectiveness of proposed center pooling, we then add the center pooling module to the network.
+
+- It demonstrates that our center pooling is effective in detecting center keypoints of objects, especially for large objects.
+
+- Our explanation is that center pooling can extract richer internal visual patterns, and large objects contain more accessible internal visual patterns.
