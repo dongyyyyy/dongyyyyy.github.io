@@ -69,4 +69,108 @@ categories: jekyll pixyll
 
  - Accordingly, for better detecting center keypoints and corners, we propose two strategies to enrich center and corner information, respectively.
 
- - **cener pooling** : It is used in the branch for predicting center keypoints. Center pooling helps the center keypoints obtain more recognizable visual patterns within objects, which makes it easier to perceive the central part of a proposal. 
+ - **cener pooling** : It is used in the branch for predicting center keypoints. Center pooling helps the center keypoints obtain more recognizable visual patterns within objects, which makes it easier to perceive the central part of a proposal.
+  - We achieve this by getting out the max summed response in both horizontal and vertical directions of the center keypoint on a feature map for predicting center keypoints.
+
+
+  - **cascade corner pooling** which equips the original corner pooling module with the ability of perceiving internal information.
+    - We achieve this by getting out the max summed response in both boundary and internal directions of objects on a feature map for predicting corners.
+
+
+  - **Empirically, we verify that such a two-directinal pooling method is more stable, i.e., being more robust to feature-level noises, which contributes to the improvement of both precision and recall.**
+
+---
+
+## Related Work
+
+- Object detection involves locating and classifying the objects. In the deep learning era, powered by deep convolutional neural networks, object detection approaches can be roughly categorized into two main types of piplines, namely, two-stage approaches and one-stage approaches.
+
+- **Two-stage approaches** divide the object detection task into two stages: *extract RoIs*, then *classify and regress the RoIs*.
+
+- R-CNN & Fast-RCNN & Faster-RCNN & Mask-RCNN등 많은 논문에서 언급했기에 해당 설명 부분은 생략
+
+- The kdypoint-based object detection approaches are proposed to avoid the disadvantages of using anchor boxes and bounding boxes regression.
+
+- Other meaningful works are proposed for different problems in object detection, e.g., focus on the architecture design, focus on the contextual relationship, focus on the multi-scale unification.
+
+
+- **One-stage approaches** remove the RoI extraction process and directly classify and regress the candidate anchor boxes.
+
+- Two-stage approaches와 마찬가지로 상세 설명 부분은 생략함
+
+- **CornerNet** is another keypoint-based approach, which directly detect an object using a pair of corners. *Alothough CornetNet achieve high performance, it still has more room to improve.*
+
+---
+
+## Our approach
+### Baseline and Motivation
+- This paper uses CornerNet as the basline. For detecting corners, CornerNet produces, two heatmaps: a heatmap of top-left corners and a heatmap of bottom-right corners.
+
+
+- The heatmaps represent the locations of keypoints of different categories and assignes a confidence score for each keypoint. Besides, it also predicts an embedding and a group of offsets for each corner.
+
+
+- The embeddings are used to identify if two corners are from the same object. The offsets learn to remap the corners from the heatmaps to the input image.
+
+- For generating object bounding boxes, top-k left-top corners and bottom-right corners are selected from the heatmaps according to their scores, respectively.
+
+- Then, the distance of the embedding vectors of a pair of corners is calculated to determine if the paired corners belong to the same object.
+
+- An object bounding box is generated if the distance is less than a threshold. The bounding box is assigned a confidence score, which equals to the average scores of the corner pair.
+
+ ![_config.yml](https://dongyyyyy.github.io/images/centerNet_Table1.JPG)
+
+- The quantitative reresults demonstrate the incorrect bounding boxes account for a large proportion even at low IoU thresholds, e.g., CornerNet obtains 32.7% FD rate at IoU = 0.05.
+
+
+- This means in average, 32.7 out of every 100 object bounding boxes have IoU lower than 0.05 with the ground-truth. The small incorrect bounding boxes are even more, which achieves 60.3% FD rate.
+
+
+- One of the possible reasons lies in that CornerNet cannot look into the regions inside the bounding boxes.
+
+
+- To make CornerNet perceive the visual patterns in bounding boxes, one potential solution is to adapt CornerNet into a two-stage detector, which uses the RoI pooling to look into the visual patterns in bounding boxes. However, it is known that such a paradigm is computationally expensive.
+
+
+- **In this paper, we propose a highly efficient alternative called CenterNet to explore the visual patterns within each bounding box.**
+
+
+- For detecting an object, our approach uses a triplet, rather than a pair, of keypoints. By doing so, our approach is still a one-stage detector, but partially inherits the functionality of RoI pooling.
+
+
+- Our apporach only pays attention to the center information, the cost of our approach is minimal. Meanwhile, we further introudce the visual patterns within objects into the keypoint detection process by using center pooling and cascade corner pooling.
+
+---
+ ![_config.yml](https://dongyyyyy.github.io/images/centerNet_Figure2.JPG)
+
+---
+
+### Object Detection as Keypoint Triplets
+
+- The overall network architecture is shown in Figure 2. We represent each object by a center keypoint and a pair of corners.  Specifically, we embed a heatmap for the center keypoints on the basis of CornerNet and predict the offsets of the center keypoints. Then, we use the method proposed in CornerNet to generate top-k bounding boxes.
+
+
+- However, to effectively filter out the incorrect bounding boxes, we leverage the detected center keypoints and resort to the following procedure:
+
+
+  1. **select top-k center keypoints according to their scores**
+  2. **use the corresponding offsets to remap these center keypoints to the input iamge**
+  3. **define a central region for each bounding box and check if the central region contains center keypoints. Note that the class labels of the checked center keypoints should be same as that of the bounding box**
+  4. **if a center keypoint is detected in the central region, we will preserve the boudning box. The score of the bounding box will be replaced by the average scores of the three points, i.e., the top-left corner, the bottom-right corner and the center keypoint. If there are no center keypoints detected in its central region, the bounding box will be removeed.**
+
+- The size of the central region in the bounding box affects the detection results. For example, smaller central regions lead to a low recall rate for small bounding boxes, while larger central regions lead to a low precision for large bounding boxes.
+
+
+- Therefore, we propose a scale-aware central region to adaptively fit the size of bounding boxes. The scale-aware central region tends to generate a relatively large central region for a small bounding box.
+
+---
+
+ ![_config.yml](https://dongyyyyy.github.io/images/centerNet_Figure3.JPG)
+
+---
+
+- In this paper, n is set to be 3 and 5 for the scales of bounding boxes less and greater than 150, respectively. Figure3 shows two central regions when n = 3 and n = 5, a scale-aware central region, then we check if the central region contains center keypoints.
+
+---
+
+### Enriching Center and Corner Information
