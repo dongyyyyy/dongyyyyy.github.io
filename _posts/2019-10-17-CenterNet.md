@@ -5,7 +5,7 @@ date: 2019-10-22 10:42
 summary: Summary keypoint-based object detection "CenterNet"
 categories: jekyll pixyll
 ---
-# Object Detection 정리
+# CenterNet  : Keypoint Triplets for Object Detection
 ---
 
 ## Abstract
@@ -176,7 +176,7 @@ categories: jekyll pixyll
   1. **select top-k center keypoints according to their scores**
   - 점수에 따라 top -k 센터 키포인트를 선택하십시오
   2. **use the corresponding offsets to remap these center keypoints to the input image**
-  - 입력 화상에 중심 요점을 매핑 할 대응하는 오프셋을 사용
+  - 입력 이미지에 중심 키포인트를 재매핑하기 위해서 일치하는 오프셋을 사용
   3. **define a central region for each bounding box and check if the central region contains center keypoints. Note that the class labels of the checked center keypoints should be same as that of the bounding box**
   - 각 경계 상자의 중앙 영역을 정의하고 중앙 영역에 중앙 키포인트가 있는지 확인하십시오. 체크 된 중심 키포인트의 클래스 레이블은 경계 상자의 클래스 레이블과 동일해야합니다.
   4. **if a center keypoint is detected in the central region, we will preserve the boudning box. The score of the bounding box will be replaced by the average scores of the three points, i.e., the top-left corner, the bottom-right corner and the center keypoint. If there are no center keypoints detected in its central region, the bounding box will be removeed.**
@@ -206,7 +206,7 @@ categories: jekyll pixyll
   - 물체의 기하학적 중심은 인식 할 수있는 시각적 패턴을 반드시 전달할 필요는 없습니다 (예 : 사람의 머리에는 강한 시각적 패턴이 포함되어 있지만 중심 키포인트는 종종 인체의 중간에 있습니다).
 
   - To address this issue, we propose center pooling to capture richer and more recognizable visual patters.
-  - 이 문제를 해결하기 위해보다 풍부하고 인식 가능한 시각적 패턴을 캡처 할 수있는 센터 풀링을 제안합니다.
+  - 이 문제를 해결하기 위해보다 풍부하고 인식 가능한 시각적 패턴을 캡처 할 수 있는 센터 풀링을 제안합니다.
 
 
   - Figure 4(a) shows the principle of center pooling.
@@ -226,7 +226,7 @@ categories: jekyll pixyll
 - 모서리는 종종 개체 외부에 있으며 로컬 모양 기능이 없습니다. CornerNet은이 문제를 해결하기 위해 코너 풀링을 사용합니다. 코너 풀링의 원리는 그림 4 (b)에 나와 있습니다.
 
  - Corner pooling aims to find the maximum values on the boundary directions so as to determine corners. However, it makes corners sensitive to the edges.
-- 코너 풀링은 코너를 결정하기 위해 경계 방향에서 최대 값을 찾는 것을 목표로합니다. 그러나 모서리는 모서리에 민감합니다.
+- 코너 풀링은 코너를 결정하기 위해 경계 방향에서 최대 값을 찾는 것을 목표로합니다. 그러나 그것은 모서리를 가장자리에 민감하게 만듭니다.
 
  - To adress this problem, we need to let corners "see" the visual patterns of objects. The priciple of cascade corner pooling is presented in Figure 4(c).
 - 이 문제를 해결하려면 모서리가 객체의 시각적 패턴을 "보도록"해야합니다. 계단식 코너 풀링의 원리는 그림 4 (c)에 나와 있습니다.
@@ -361,7 +361,7 @@ categories: jekyll pixyll
 ---
 
 - We find that the improvement for the small objects (that is 4.6%) is more significant than that for other object scales.
-- 작은 객체 (4.6 %)의 개선이 다른 객체 스케일의 개선보다 더 중요하다는 것을 알았습니다.
+- 작은 객체 (4.6 %)의 개선이 다른 객체 스케일의 개선보다 더 컸다는 것을 알았습니다.
 
 - The improvement for large objects is almost negligible (from 52.2% to 52.3%).
 - 큰 물체의 개선은 거의 무시할 만합니다 (52.2 %에서 52.3 %).
