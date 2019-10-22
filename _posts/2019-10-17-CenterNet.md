@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Study Object Detection
+title: Study CenterNet
 date: 2019-10-22 10:42
-summary: Summary Object Detection One-Stage & Two-Stage
+summary: Summary keypoint-based object detection "CenterNet"
 categories: jekyll pixyll
 ---
 # Object Detection 정리
@@ -97,9 +97,10 @@ categories: jekyll pixyll
 - R-CNN & Fast-RCNN & Faster-RCNN & Mask-RCNN등 많은 논문에서 언급했기에 해당 설명 부분은 생략
 
 - The keypoint-based object detection approaches are proposed to avoid the disadvantages of using anchor boxes and bounding boxes regression.
-- 키포인트 기반의 검출 방법은 바운딩 박스들을 회귀와 앵커박스들을 사용하는 불이익을 회피하기 위해 제안되었다.
+- 키포인트 기반의 검출 방식은 바운딩 박스들을 회귀와 앵커박스들을 사용함으로 인해 생기는 불이익을 회피하기 위해 제안되었다.
+
 - Other meaningful works are proposed for different problems in object detection, e.g., focus on the architecture design, focus on the contextual relationship, focus on the multi-scale unification.
-- 다른 의미있는 작품은 객체 탐지의 다른 문제, 예를 들어 아키텍처 디자인에 초점을 맞추고 상황에 관계를 두고 멀티 스케일 합침에 초점을두고 제안됩니다.
+- 다른 의미있는 작업은 객체 탐지의 다른 문제, 예를 들어 아키텍처 디자인에 초점을 맞추고 상황에 관계를 두고 멀티 스케일 합침에 초점을두고 제안됩니다.
 
 - **One-stage approaches** remove the RoI extraction process and directly classify and regress the candidate anchor boxes.
 - **One-stage 접근법** 은 RoI추출 과정을 제거하고 직접적으로 후보 앵커 박스들을 회귀하고 분류합니다.
@@ -107,20 +108,23 @@ categories: jekyll pixyll
 - Two-stage approaches와 마찬가지로 상세 설명 부분은 생략함
 
 - **CornerNet** is another keypoint-based approach, which directly detect an object using a pair of corners. *Alothough CornetNet achieve high performance, it still has more room to improve.*
-- **CornerNet** 은 또다른 키포인트 기반의 접근법이며 이는 직접적으로 코너의 한 쌍을 사용하여 객체를 검출한다. 비록 CornerNet이 높은 성능을 얻을지라도 그것은 여전히 개선할 점이 많다.
+
+-  **CornerNet** 은 또다른 키포인트 기반의 접근법이며 이는 직접적으로 코너의 한 쌍을 사용하여 객체를 검출한다. 비록 CornerNet이 높은 성능을 얻을지라도 그것은 여전히 개선할 점이 많다.
+
+
 ---
 
 ## Our approach
 ### Baseline and Motivation
 - This paper uses CornerNet as the basline. For detecting corners, CornerNet produces, two heatmaps: a heatmap of top-left corners and a heatmap of bottom-right corners.
-- 이 논문은 CornerNet을 기본베이스로 사용한다. 모퉁이들을 검출하기 위해서, CornerNet는 두개의 히트맵을 생성합니다 : 상단-좌축 모퉁이와 하단-우측 모퉁이의 히트맵을
+- 이 논문은 CornerNet을 기본베이스로 사용한다. 모퉁이들을 검출하기 위해서, CornerNet는 두개의 히트맵을 생성합니다 : 상단-좌축 모퉁이와 하단-우측 모퉁이의 히트맵
 
 
 - The heatmaps represent the locations of keypoints of different categories and assignes a confidence score for each keypoint. Besides, it also predicts an embedding and a group of offsets for each corner.
 - 이 히트맵들은 다른 분류들의 키포인트의 위치를 나타내며 각 키포인트에 대한 신뢰도 점수를 할당합니다. 또한, 각 모서리에 대한 오프셋들의 그룹과 임베딩을 예측합니다.
 
 - The embeddings are used to identify if two corners are from the same object. The offsets learn to remap the corners from the heatmaps to the input image.
-- 임베딩은 두개의 모퉁이가 같은 객체인지를 확인하기 위해 사용됩니다. 오프셋들은 히트맵으로에서 입력 이미지로부터 모서리를 다시 연결하기 위해 학습합니다.
+- 임베딩은 두개의 모퉁이가 같은 객체인지를 확인하기 위해 사용됩니다. 오프셋들은 히트맵에서 입력 이미지로부터 모서리를 다시 연결하기 위해 학습합니다.
 
 - For generating object bounding boxes, top-k left-top corners and bottom-right corners are selected from the heatmaps according to their scores, respectively.
 - 객체 바운딩 박스들을 생성하기위해, 최상위-k 좌측 상단 코너와 하단-우측 코너들은 반복적으로  점수에 따라 히트맵으로부터 선택됩니다.
@@ -133,17 +137,18 @@ categories: jekyll pixyll
 
  ![_config.yml](https://dongyyyyy.github.io/images/centerNet_Table1.JPG)
 
+- FD : False discovery rates (잘못된 발견 비율)
 - The quantitative reresults demonstrate the incorrect bounding boxes account for a large proportion even at low IoU thresholds, e.g., CornerNet obtains 32.7% FD rate at IoU = 0.05.
-- 정량적 결과는 IoU 임계 값이 낮더라도 잘못된 경계 상자가 큰 비율을 차지함을 보여줍니다. 예를 들어 CornerNet은 IoU = 0.05에서 32.7 % FD 속도를 얻습니다.
+- 정량적 결과는 IoU 임계 값이 낮더라도 잘못된 경계 상자가 큰 비율을 차지함을 보여줍니다. 예를 들어 CornerNet은 IoU = 0.05에서 32.7 % FD 비율를 얻습니다.
 
 - This means in average, 32.7 out of every 100 object bounding boxes have IoU lower than 0.05 with the ground-truth. The small incorrect bounding boxes are even more, which achieves 60.3% FD rate.
-- 이는 평균적으로 100 개의 개체 경계 상자 중 32.7 개가 IoU가 0.05보다 낮으며 기본적으로 진실임을 의미합니다. 작고 잘못된 경계 상자는 훨씬 더 많아서 FD 비율이 60.3 %에 이릅니다.
+- 이는 평균적으로 100 개의 객체 경계 상자 중 32.7 개가 IoU가 0.05보다 낮으며 기본적으로 참임을 의미합니다. 작고 잘못된 경계 상자는 훨씬 더 많아서 FD 비율이 60.3 %에 이릅니다.
 
 - One of the possible reasons lies in that CornerNet cannot look into the regions inside the bounding boxes.
 - 가능한 이유 중 하나는 CornerNet이 경계 상자 내부의 영역을 볼 수 없기 때문입니다.
 
 - To make CornerNet perceive the visual patterns in bounding boxes, one potential solution is to adapt CornerNet into a two-stage detector, which uses the RoI pooling to look into the visual patterns in bounding boxes. However, it is known that such a paradigm is computationally expensive.
-- CornerNet이 경계 상자에서 시각적 패턴을 인식하게하려면 CornerNet을 two-stage 감지기에 적응시키는 것이 RoI 풀링을 사용하여 경계 상자의 시각적 패턴을 조사하는 것입니다. 그러나 이러한 패러다임은 계산 비용이 많이 드는 것으로 알려져 있습니다.
+- CornerNet이 경계 상자에서 시각적 패턴을 인식하게하려면 CornerNet을 two-stage 감지기에 적응시키는 것이며 이는 RoI 풀링을 사용하여 경계 상자의 시각적 패턴을 조사하는 것입니다. 그러나 이러한 패러다임은 계산 비용이 많이 드는 것으로 알려져 있습니다.
 
 - **In this paper, we propose a highly efficient alternative called CenterNet to explore the visual patterns within each bounding box.**
 - 본 논문에서는 각 경계 상자 내의 시각적 패턴을 탐색하기위한 CenterNet이라는 매우 효율적인 대안을 제안합니다.
