@@ -285,9 +285,16 @@ categories: jekyll pixyll
 ---
 
   - These results firmly demonstrate the effectiveness of CenterNet.
-  - Meanwhile, it can be seen that the most contribution comes from the small objects.
+  - 이러한 결과는 CenterNet의 효과를 확실하게 보여줍니다.
 
-  - The benefit stems from the center information medeled by the center keypoints: the smaller the scale of an incorrect bounding box is, the lower probability a center keypoint can be detected in its central region.
+
+  - Meanwhile, it can be seen that the most contribution comes from the small objects.
+  - 한편, 가장 큰 기여는 작은 물체에서 나온다는 것을 알 수 있습니다.
+
+
+  - The benefit stems from the center information modeled by the center keypoints: the smaller the scale of an incorrect bounding box is, the lower probability a center keypoint can be detected in its central region.
+- 이점은 중심 키포인트에 의해 모델링 된 중심 정보에서 비롯됩니다. 잘못된 경계 상자의 스케일이 작을수록 중앙 키포인트가 중앙 영역에서 감지 될 가능성이 낮아집니다.
+
 
 ---
   ![_config.yml](https://dongyyyyy.github.io/images/centerNet_Figure6.JPG)
@@ -295,15 +302,16 @@ categories: jekyll pixyll
 ---
 
   - Figure 6(a) and Figure 6(b) show some qualitative comparisons, which demonstrate the effectiveness of CenterNet in reducing small incorrect bounding boxes.
+  -  그림 6 (a)와 그림 6 (b)는 일부 부정확 한 경계 상자를 줄이는 데 CenterNet의 효과를 보여주는 질적인 비교를 보여줍니다.
 
   - CenterNet also leads to a large improvement for reducing medium and large incorrect bounding boxes.
-
+  -  CenterNet은 또한 중간 및 큰 잘못된 경계 상자를 줄이기 위해 크게 개선되었습니다.
     - Figure 6(c) and Figure 6(d)) show some qualitative comparisons for reducing medium and large incorrect bounding boxes.
-
+    - 그림 6 (c)와 그림 6 (d)는 중간 및 큰 부정확 한 경계 상자를 줄이기위한 질적 비교를 보여줍니다.
     - It is wort noting that the AR is also significantly improved, with the best performance achieved with multi-scale testing.
-
+    - 멀티 스케일 테스트를 통해 최고의 성능을 발휘하여 AR도 크게 개선되었다는 점에 주목할 필요가 있습니다.
     - This is becaues our approach removes lots of incorrect bounding boxes, which is equivalent to improving the confidence of those bounding boxes with accurate locations but lower scores.
-
+    - 이것은 우리의 접근 방식이 잘못된 경계 상자를 많이 제거하기 때문에 정확한 위치이지만 점수가 낮은 경계 상자의 신뢰도를 향상시키는 것과 같습니다.
 ---
   ![_config.yml](https://dongyyyyy.github.io/images/centerNet_Figure7.JPG)
 
@@ -316,10 +324,13 @@ categories: jekyll pixyll
 ---
 
 - Table 3 shows the FD rates for CornerNet and CenterNet. CornerNet generates many incorrect bounding boxes even at IoU = 0.05 threshold.
+- 표 3은 CornerNet 및 CenterNet의 FD 비율을 보여줍니다. CornerNet은 IoU = 0.05 임계 값에서도 많은 잘못된 경계 상자를 생성합니다.
 
 - On the other hand, CornerNet generates more small incorrect bounding boxes than medium and large incorrect bounding boxes.
+- 반면에 CornerNet 잘못된 작은 경계상자들을 잘못된 중간과 큰  경계상자들보다 많이 생성합니다.
 
 - Our CenterNet decreases the FD rates at all criteria via exploring central regions.
+- CenterNet은 중앙 지역 탐색을 통해 모든 기준에서 FD 비율을 낮 춥니 다.
 
 ### Inference Speed
 
@@ -328,25 +339,73 @@ categories: jekyll pixyll
 ### Ablation Study
 
 - Our work has contributed three components, including central region exploration, center pooling and cascade corner pooling.
+- 우리의 작업은 중앙 지역 탐사, 센터 풀링 및 계단식 코너 풀링을 포함하여 세 가지 구성 요소에 기여했습니다.
 
 - To analyze the contribution of each individual component, an ablation study is given here.
+- 각 개별 구성 요소의 기여도를 분석하기 위해 절제 연구가 제공됩니다.
 
 - **Central region exploration** To understand the importance of the central region exploration, we add a center heatmap branch to the baseline and use a triplet of keypoints to detect bounding boxes.
+- 중앙 영역 탐색의 중요성을 이해하기 위해 기준선에 중앙 히트 맵 분기를 추가하고 삼중점 키포인트를 사용하여 경계 상자를 감지합니다.
 
 - For the center keypoint detection, we only use conventional convolutions.
+- 중심 키포인트 감지의 경우 기존 컨볼 루션 만 사용합니다.
+
 ---
 ![_config.yml](https://dongyyyyy.github.io/images/centerNet_Table4.JPG)
 
 ---
 
 - We find that the improvement for the small objects (that is 4.6%) is more significant than that for other object scales.
+- 작은 객체 (4.6 %)의 개선이 다른 객체 스케일의 개선보다 더 중요하다는 것을 알았습니다.
 
 - The improvement for large objects is almost negligible (from 52.2% to 52.3%).
+- 큰 물체의 개선은 거의 무시할 만합니다 (52.2 %에서 52.3 %).
 
-- This is not surprising because, from a probabilistic point of view, the center keypoint for a small object is easier to be located than that of  a large object.
+- **This is not surprising because, from a probabilistic point of view, the center keypoint for a small object is easier to be located than that of  a large object.**
+- 확률적인 관점에서 작은 물체의 중심 키포인트가 큰 물체의 중심 키포인트보다 위치하기 쉽기 때문에 이는 놀라운 일이 아닙니다.
 
 - **Center pooling** To demonstrate the effectiveness of proposed center pooling, we then add the center pooling module to the network.
+- 제안 된 센터 풀링의 효과를 보여주기 위해 센터 풀링 모듈을 네트워크에 추가합니다.
 
 - It demonstrates that our center pooling is effective in detecting center keypoints of objects, especially for large objects.
+- 중심 풀링은 특히 큰 오브젝트의 경우 오브젝트의 중심 키포인트를 감지하는 데 효과적이라는 것을 보여줍니다.
 
 - Our explanation is that center pooling can extract richer internal visual patterns, and large objects contain more accessible internal visual patterns.
+- 우리는 센터 풀링이 더 풍부한 내부 시각적 패턴을 추출 할 수 있으며 큰 객체에는 더 접근하기 쉬운 내부 시각적 패턴이 포함되어 있다고 설명합니다.
+
+- **Cascade corner pooling** We replace corner pooling with cascade corner pooling to detect corners.
+- 코너 풀링을 캐스케이드 코너 풀링으로 교체하여 코너를 감지합니다.
+
+- The results of the second row show there is almost no change in the AP for large object ( i.e., 52.2% vs. 52.2%), but the AR is improved by 1.8% (from 74.0% to 75.8%).
+- 두 번째 행의 결과는 큰 물체에 대한 AP의 변화가 거의 없음 (즉, 52.2 % 대 52.2 %)을 나타내지 만 AR은 1.8 % (74.0 %에서 75.8 %)로 개선되었습니다.
+
+- This suggest that cascade corner pooling can "see" more objects, but too rich visual patterns may interfere with its perception for the boundary information, leading to many inaccurate bounding boxes.
+- 이는 계단식 코너 풀링이 더 많은 객체를 "볼"수 있지만 너무 풍부한 시각적 패턴은 경계 정보에 대한 인식을 방해하여 많은 부정확 한 경계 상자로 이어질 수 있음을 나타냅니다.
+
+- After equipping with our CenterNet, the inaccurate bounding boxes are effectively suppressed, which improves the AP for large object by 2.2% (from 53.6% to 55.8%).
+- CenterNet을 장착 한 후 부정확 한 경계 상자가 효과적으로 억제되어 대형 물체의 AP가 2.2 % (53.6 %에서 55.8 %)로 향상되었습니다.
+
+### Error Analysis
+
+- The exploration of visual patterns within each bounding box depends on the center keypoints. In other words, once a center keypoints is missed, the proposed CenterNet would miss the visual patterns within the bounding box.
+- 각 경계 상자 내의 시각적 패턴 탐색은 중심 키포인트에 따라 다릅니다. 다시 말해, 중심 키포인트를 놓치면 제안 된 CenterNet은 경계 상자 내의 시각적 패턴을 놓치게됩니다.
+
+- To understand the importance of center keypoints, we replace the predicted center keypoints with the ground-truth values and evaluate performance on the MS-COCO validation dataset.
+- 중심 키포인트의 중요성을 이해하기 위해 예측 된 중심 키포인트를 실제 값으로 바꾸고 MS-COCO 유효성 검사 데이터 집합의 성능을 평가합니다.
+
+- The result demonstrates that the detection of center keypoints is far from the bottlenect.
+- 결과는 중심 키포인트 감지가 병목에서 멀리 떨어져 있음을 보여줍니다.
+
+---
+
+## Conclusions
+
+- CenterNet addresses the problem that CornerNet lacks an additional look into the cropped regions by exploring the visual patterns within each proposed region with minimal costs.
+- CenterNet은 최소한의 비용으로 제안 된 각 영역의 시각적 패턴을 탐색하여 CornerNet이 잘린 영역에 대한 추가보기가 부족한 문제를 해결합니다.
+
+- As one-stage approaches remove the RoI extraction process, they cannot pay attention to internal information within cropped regions.
+- 1 단계 접근 방식이 RoI 추출 프로세스를 제거하므로 자른 영역 내의 내부 정보에주의를 기울일 수 없습니다.
+
+- **An intuitive explanation of our contribution lies in that we equip a one-stage detector with the ability of two-stage approaches, with an effcient discriminator being added.**
+
+- 우리의 기여도에 대한 직관적 인 설명은 1 단계 검출기에 2 단계 접근법의 능력을 갖추고 있으며 효율적인 판별 기가 추가된다는 것입니다.
