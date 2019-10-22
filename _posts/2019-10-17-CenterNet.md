@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Study Object Detection
-date: 2019-08-21 17:58
+date: 2019-10-22 10:42
 summary: Summary Object Detection One-Stage & Two-Stage
 categories: jekyll pixyll
 ---
